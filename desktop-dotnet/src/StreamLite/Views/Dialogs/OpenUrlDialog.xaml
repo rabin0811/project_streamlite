@@ -1,0 +1,38 @@
+<Window x:Class="StreamLite.Views.Dialogs.OpenUrlDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Open Network Stream"
+        Width="500" Height="Auto"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundBrush}"
+        Foreground="{StaticResource TextPrimaryBrush}"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize">
+    <Border Margin="0" CornerRadius="12" Background="{StaticResource SurfaceBrush}" Padding="24">
+        <StackPanel>
+            <TextBlock Style="{StaticResource HeadingText}" FontSize="20" Margin="0,0,0,8">Open Network Stream</TextBlock>
+            <TextBlock Style="{StaticResource CaptionText}" Margin="0,0,0,20">
+                Enter a URL to stream. Supports HLS, RTSP, HTTP, and more.
+            </TextBlock>
+
+            <TextBlock Text="Stream URL" FontSize="13" FontWeight="Medium" Margin="0,0,0,6"/>
+            <TextBox x:Name="UrlBox" Margin="0,0,0,16"/>
+
+            <TextBlock Text="YouTube URL" FontSize="13" FontWeight="Medium" Margin="0,0,0,6"/>
+            <TextBox Margin="0,0,0,4"/>
+            <TextBlock Style="{StaticResource CaptionText}" Margin="0,0,0,16">
+                YouTube links will be opened in your default browser.
+            </TextBlock>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="CancelBtn" Style="{StaticResource ModernButton}" Content="Cancel" Width="100"
+                        Click="CancelClick"/>
+                <Button x:Name="OkBtn" Style="{StaticResource AccentButton}" Content="Open" Width="100"
+                        Click="OkClick" IsDefault="True"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>
+

@@ -1,0 +1,146 @@
+<UserControl x:Class="StreamLite.Views.Pages.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="32">
+        <StackPanel MaxWidth="700">
+            <TextBlock Style="{StaticResource HeadingText}" Margin="0,0,0,32">Settings</TextBlock>
+
+            <!-- Playback -->
+            <Border Style="{StaticResource GlassCard}" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SubheadingText}" Margin="0,0,0,16">Playback</TextBlock>
+                    
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Default Volume" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Slider Width="150" Minimum="0" Maximum="1" Value="{Binding SettingsVM.DefaultVolume}"/>
+                            <TextBlock Text="{Binding SettingsVM.DefaultVolume, StringFormat='{}{0:P0}'}" 
+                                       Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Default Speed" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Slider Width="150" Minimum="0.25" Maximum="4" Value="{Binding SettingsVM.DefaultSpeed}" 
+                                    TickFrequency="0.25" IsSnapToTickEnabled="True"/>
+                            <TextBlock Text="{Binding SettingsVM.DefaultSpeed, StringFormat='{}{0:F2}x'}" 
+                                       Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Hardware Decoding" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding SettingsVM.HardwareDecoding}" 
+                                  Style="{StaticResource ToggleSwitch}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Resume & Position -->
+            <Border Style="{StaticResource GlassCard}" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SubheadingText}" Margin="0,0,0,16">Resume &amp; Position</TextBlock>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Auto Resume" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding SettingsVM.AutoResume}" Style="{StaticResource ToggleSwitch}"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Remember Position" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding SettingsVM.RememberPosition}" Style="{StaticResource ToggleSwitch}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Subtitles -->
+            <Border Style="{StaticResource GlassCard}" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SubheadingText}" Margin="0,0,0,16">Subtitles</TextBlock>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Auto Load Subtitles" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding SettingsVM.AutoLoadSubtitles}" Style="{StaticResource ToggleSwitch}"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Subtitle Font Size" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Slider Width="150" Minimum="10" Maximum="72" Value="{Binding SettingsVM.SubtitleFontSize}"/>
+                            <TextBlock Text="{Binding SettingsVM.SubtitleFontSize, StringFormat='{}{0}pt'}" 
+                                       Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Storage -->
+            <Border Style="{StaticResource GlassCard}" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SubheadingText}" Margin="0,0,0,16">Storage</TextBlock>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Thumbnail Cache" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="{Binding SettingsVM.ThumbnailCacheFormatted}" 
+                                   Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                        <Button Grid.Column="2" Style="{StaticResource ModernButton}" 
+                                Command="{Binding SettingsVM.ClearThumbnailCacheCommand}" 
+                                Content="Clear" FontSize="12" Padding="12,4"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Database Size" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="{Binding SettingsVM.DatabaseSizeFormatted}" 
+                                   Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Reset -->
+            <Border Style="{StaticResource GlassCard}" Padding="20" Margin="0,0,0,16">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource ModernButton}" BorderBrush="{StaticResource DangerBrush}"
+                            Foreground="{StaticResource DangerBrush}"
+                            Command="{Binding SettingsVM.ResetSettingsCommand}" Content="Reset All Settings"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
+

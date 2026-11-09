@@ -1,0 +1,76 @@
+<UserControl x:Class="StreamLite.Views.Pages.EqualizerPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+    <Grid Margin="32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource HeadingText}" VerticalAlignment="Center">Equalizer</TextBlock>
+                <CheckBox IsChecked="{Binding EqualizerVM.IsEnabled}" Style="{StaticResource ToggleSwitch}"/>
+            </StackPanel>
+            <TextBlock Style="{StaticResource CaptionText}">
+                Fine-tune audio frequencies for your perfect sound.
+            </TextBlock>
+        </StackPanel>
+
+        <!-- Presets -->
+        <WrapPanel Grid.Row="1" Margin="0,0,0,24">
+            <TextBlock Text="Presets:" VerticalAlignment="Center" Margin="0,0,12,0"
+                       Foreground="{StaticResource TextSecondaryBrush}"/>
+            <ItemsControl ItemsSource="{Binding EqualizerVM.Presets}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton GroupName="Presets" Content="{Binding Key}" 
+                                     Style="{StaticResource ChipStyle}" Margin="0,0,6,0"
+                                     Command="{Binding DataContext.EqualizerVM.ApplyPresetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                     CommandParameter="{Binding Key}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </WrapPanel>
+
+        <!-- Preamp -->
+        <StackPanel Grid.Row="2" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                <TextBlock Text="Preamp" Width="60" VerticalAlignment="Center"/>
+                <Slider Width="200" Minimum="-20" Maximum="20" Value="{Binding EqualizerVM.Preamp}" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding EqualizerVM.Preamp, StringFormat='{}{0:F1} dB'}" Width="60"
+                           Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Band Sliders -->
+            <ItemsControl ItemsSource="{Binding EqualizerVM.BandFrequencies}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="8,0" HorizontalAlignment="Center">
+                            <Slider Width="32" Minimum="-20" Maximum="20" Orientation="Vertical" 
+                                    Height="200" IsDirectionReversed="True" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding}" FontSize="10" HorizontalAlignment="Center"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
+</UserControl>
+

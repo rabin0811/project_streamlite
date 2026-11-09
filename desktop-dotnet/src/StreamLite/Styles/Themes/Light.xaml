@@ -1,0 +1,44 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Color x:Key="ThemeBackground">#F5F5F5</Color>
+    <Color x:Key="ThemeSurface">#FFFFFF</Color>
+    <Color x:Key="ThemeCard">#FFFFFF</Color>
+    <Color x:Key="ThemeSurfaceAlt">#F0F0F0</Color>
+    <Color x:Key="ThemeAccent">#4FC3F7</Color>
+    <Color x:Key="ThemeAccentSecondary">#F48FB1</Color>
+    <Color x:Key="ThemeAccentTertiary">#81C784</Color>
+    <Color x:Key="ThemeTextPrimary">#1a1a2e</Color>
+    <Color x:Key="ThemeTextSecondary">#606080</Color>
+    <Color x:Key="ThemeTextDisabled">#A0A0B0</Color>
+    <Color x:Key="ThemeBorder">#E0E0E0</Color>
+    <Color x:Key="ThemeBorderLight">#F0F0F0</Color>
+    <Color x:Key="ThemeControl">#F5F5F5</Color>
+    <Color x:Key="ThemeControlHover">#EAEAEA</Color>
+    <Color x:Key="ThemeControlPressed">#E0E0E0</Color>
+    <Color x:Key="ThemeDanger">#FF5252</Color>
+    <Color x:Key="ThemeWarning">#FFD740</Color>
+    <Color x:Key="ThemeSuccess">#81C784</Color>
+    <Color x:Key="ThemeGlass">#EEFFFFFF</Color>
+
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource ThemeBackground}"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource ThemeSurface}"/>
+    <SolidColorBrush x:Key="CardBrush" Color="{StaticResource ThemeCard}"/>
+    <SolidColorBrush x:Key="SurfaceAltBrush" Color="{StaticResource ThemeSurfaceAlt}"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource ThemeAccent}"/>
+    <SolidColorBrush x:Key="AccentSecondaryBrush" Color="{StaticResource ThemeAccentSecondary}"/>
+    <SolidColorBrush x:Key="AccentTertiaryBrush" Color="{StaticResource ThemeAccentTertiary}"/>
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource ThemeTextPrimary}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource ThemeTextSecondary}"/>
+    <SolidColorBrush x:Key="TextDisabledBrush" Color="{StaticResource ThemeTextDisabled}"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource ThemeBorder}"/>
+    <SolidColorBrush x:Key="BorderLightBrush" Color="{StaticResource ThemeBorderLight}"/>
+    <SolidColorBrush x:Key="ControlBrush" Color="{StaticResource ThemeControl}"/>
+    <SolidColorBrush x:Key="ControlHoverBrush" Color="{StaticResource ThemeControlHover}"/>
+    <SolidColorBrush x:Key="ControlPressedBrush" Color="{StaticResource ThemeControlPressed}"/>
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource ThemeDanger}"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource ThemeWarning}"/>
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource ThemeSuccess}"/>
+    <SolidColorBrush x:Key="GlassBrush" Color="{StaticResource ThemeGlass}"/>
+    <SolidColorBrush x:Key="GlassBorderBrush" Color="#204FC3F7"/>
+</ResourceDictionary>

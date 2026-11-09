@@ -1,0 +1,107 @@
+<UserControl x:Class="StreamLite.Views.Pages.PlaylistPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+    <Grid Margin="32">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <!-- Playlist Sidebar -->
+        <Border Grid.Column="0" Style="{StaticResource GlassCard}" Padding="16">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                    <TextBlock Style="{StaticResource SubheadingText}" VerticalAlignment="Center">Playlists</TextBlock>
+                    <Button Style="{StaticResource AccentButton}" Padding="8,4" FontSize="12"
+                            Command="{Binding PlaylistVM.ImportM3UCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                            <TextBlock Text="Import"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <TextBox Margin="0,0,0,12" FontSize="13">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding PlaylistVM.CreatePlaylistCommand}" 
+                                    CommandParameter="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+
+                <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding PlaylistVM.Playlists}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="12,8" Margin="0,0,0,4" CornerRadius="8" Cursor="Hand"
+                                        Background="Transparent" MouseDown="PlaylistItemMouseDown">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding ItemCount, StringFormat='{}{0}'}" 
+                                                   FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"
+                                                   VerticalAlignment="Center" Width="24"/>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="Medium"/>
+                                            <TextBlock Text="{Binding Type}" Style="{StaticResource CaptionText}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
+
+        <!-- Playlist Items -->
+        <Border Grid.Column="1" Style="{StaticResource GlassCard}" Padding="16">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                    <TextBlock Text="{Binding PlaylistVM.SelectedPlaylist.Name, FallbackValue='Select a playlist'}" 
+                               Style="{StaticResource SubheadingText}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding PlaylistVM.PlaylistItems.Count, FallbackValue='0', StringFormat='({0} items)'}"
+                               Style="{StaticResource CaptionText}" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource GhostButton}" Command="{Binding PlaylistVM.ExportPlaylistCommand}"
+                            CommandParameter="{Binding PlaylistVM.SelectedPlaylist}" ToolTip="Export">
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets"/>
+                    </Button>
+                </StackPanel>
+
+                <ScrollViewer MaxHeight="500" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding PlaylistVM.PlaylistItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="12,8" Margin="0,0,0,4" CornerRadius="8" Cursor="Hand">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <TextBlock Text="&#xE8B9;" FontFamily="Segoe MDL2 Assets" FontSize="18"
+                                                       Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding DisplayName}" FontSize="13" FontWeight="Medium"/>
+                                                <TextBlock Text="{Binding DurationFormatted}" Style="{StaticResource CaptionText}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Style="{StaticResource GhostButton}"
+                                                Command="{Binding DataContext.PlaylistVM.RemoveFromPlaylistCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}">
+                                            <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
+
+
