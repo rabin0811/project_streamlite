@@ -13,6 +13,17 @@ import SleepTimer from '../components/SleepTimer';
 
 const SPEEDS = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4];
 
+function getMediaUrl(media) {
+  if (!media) return '';
+  if (media.url) return media.url;
+  if (!media.path) return '';
+  const normalized = media.path.replace(/\\/g, '/');
+  const encoded = normalized.startsWith('//')
+    ? 'file:' + encodeURI(normalized)
+    : 'file:///' + encodeURI(normalized.replace(/^\/+/, ''));
+  return encoded.replace(/#/g, '%23').replace(/\?/g, '%3F');
+}
+
 export default function VideoPlayerScreen({ media, onClose }) {
   const navigate = useNavigate();
   const containerRef = useRef(null);
@@ -31,10 +42,14 @@ export default function VideoPlayerScreen({ media, onClose }) {
 
   const {
     playing, paused, currentTime, duration, volume, muted, speed,
-    brightness, setCurrentTime, setDuration, setVolume, toggleMute,
-    setSpeed, togglePlay, seek, seekRelative, setFullscreen, stop,
-    setBrightness, setSleepTimer, sleepTimer, addToHistory,
+    brightness, setCurrentTime, setDuration, setPlaying, setError,
+    setVolume, toggleMute, setSpeed, togglePlay, seek, seekRelative,
+    setFullscreen, stop, setBrightness, setSleepTimer, sleepTimer,
+    addToHistory,
   } = usePlayerStore();
+
+  const videoUrl = getMediaUrl(media);
+  const [videoError, setVideoError] = useState(null);
 
   const addRecent = useLibraryStore((s) => s.addRecent);
   const isFavorite = useLibraryStore((s) => s.isFavorite);
@@ -77,10 +92,74 @@ export default function VideoPlayerScreen({ media, onClose }) {
   }, []);
 
   useEffect(() => {
-    if (media?.url?.startsWith('http') || media?.url?.startsWith('rtmp') || media?.url?.startsWith('mms')) {
-      // Network stream - use video element
+    setVideoError(null);
+  }, [media?.path, media?.url]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (playing) {
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+    } else {
+      video.pause();
     }
-  }, [media]);
+  }, [playing, videoUrl]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.volume = muted ? 0 : volume;
+    video.muted = muted;
+  }, [volume, muted]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.playbackRate = speed;
+  }, [speed]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (Number.isFinite(currentTime) && Math.abs(video.currentTime - currentTime) > 0.75) {
+      const max = Number.isFinite(video.duration) ? video.duration : currentTime;
+      video.currentTime = Math.max(0, Math.min(currentTime, max));
+    }
+  }, [currentTime]);
+
+  const handleVideoMetadata = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    setDuration(Number.isFinite(video.duration) ? video.duration : 0);
+    setCurrentTime(video.currentTime || 0);
+    if (playing) video.play().catch(() => {});
+  };
+
+  const handleVideoTimeUpdate = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    setCurrentTime(video.currentTime);
+    if (Number.isFinite(video.duration) && Math.abs(video.duration - duration) > 0.1) {
+      setDuration(video.duration);
+    }
+  };
+
+  const handleVideoPlay = () => setPlaying(true);
+
+  const handleVideoEnded = () => {
+    const video = videoRef.current;
+    setCurrentTime(video && Number.isFinite(video.duration) ? video.duration : duration);
+    setPlaying(false);
+  };
+
+  const handleVideoError = () => {
+    const video = videoRef.current;
+    const message = video?.error?.message || 'Unable to play this media file.';
+    setVideoError(message);
+    setError(message);
+    setPlaying(false);
+  };
 
   const startHideTimer = useCallback(() => {
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
@@ -250,15 +329,32 @@ export default function VideoPlayerScreen({ media, onClose }) {
     >
       {/* Video background */}
       <div className="absolute inset-0 flex items-center justify-center bg-black">
-        <div className="text-center">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#4FC3F7]/20 to-[#F48FB1]/20 flex items-center justify-center mx-auto mb-4">
-            <Play size={40} className="text-[#4FC3F7]/60 ml-2" />
+        {videoUrl && !videoError ? (
+          <video
+            ref={videoRef}
+            src={videoUrl}
+            className="absolute inset-0 w-full h-full object-contain bg-black pointer-events-none"
+            playsInline
+            preload="metadata"
+            onLoadedMetadata={handleVideoMetadata}
+            onTimeUpdate={handleVideoTimeUpdate}
+            onPlay={handleVideoPlay}
+            onEnded={handleVideoEnded}
+            onError={handleVideoError}
+          />
+        ) : (
+          <div className="text-center px-6">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#4FC3F7]/20 to-[#F48FB1]/20 flex items-center justify-center mx-auto mb-4">
+              <Play size={40} className="text-[#4FC3F7]/60 ml-2" />
+            </div>
+            <p className="text-white/40 text-sm font-medium">{media?.name || 'Media Player'}</p>
+            {videoError ? (
+              <p className="text-red-400/80 text-xs mt-2 max-w-md">{videoError}</p>
+            ) : isStream ? (
+              <p className="text-white/20 text-xs mt-2">Streaming from network</p>
+            ) : null}
           </div>
-          <p className="text-white/40 text-sm font-medium">{media?.name || 'Media Player'}</p>
-          {isStream && (
-            <p className="text-white/20 text-xs mt-2">Streaming from network</p>
-          )}
-        </div>
+        )}
       </div>
 
       {/* Gesture hint overlay */}
