@@ -63,7 +63,7 @@ The debug APK is written under `android/app/build/outputs/apk/debug/`.
 - [x] Android build used the bundled Android Studio JDK 21 and SDK 36
 - [x] Electron window launched and loaded `dist/index.html`
 - [x] `HashRouter` used for `file://` routing in Electron
-- [x] HTML5 playback verified end-to-end with a local MP4 and a network MP4 (duration 5.055 s, `readyState` 4, playback advanced past 2 s)
+- [x] HTML5 playback verified end-to-end through the Network screen with a network MP4 (duration 5.055 s, `readyState` 4, playback advanced past 2 s); direct `file://` MP4 playback was also confirmed
 - [ ] No automated tests
 - [ ] Electron packaging (`electron:build`) not run
 
